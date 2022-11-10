@@ -33,16 +33,16 @@ def dataframe(link,page):
     for x in range(1,page+1) :
         request=requests.get(link+'/?page='+str(x))
         data_dict = request.json()
-        species_df = data_dict['results']
-        species_df = pd.DataFrame(species_df)
-        fd=fd.append(species_df)
-    return fd
+        df = data_dict['results']
+        df = pd.DataFrame(df)
+        fd=fd.append(df)
+    return fd.reset_index(drop=True)
 
 
-def name_url_people():   
+def name_url_people(entite):   
     
     #Appel API
-    request=requests.get(url)
+    request=requests.get(lien(entite))
 
     #Create Dataframe of result
     json_list = request.json()["results"]
@@ -68,7 +68,7 @@ def name_url_people():
     return json_list_df
      
 
-    return fd.reset_index(drop=True)
+    
 
 #creation du dataframe correspondant a partir du nom de l'entite (vehicles,people...)
 def dfswapi(entite):

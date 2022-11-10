@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import warnings
+from math import ceil
 warnings.filterwarnings('ignore')
 
 #Call the API

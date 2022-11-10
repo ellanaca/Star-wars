@@ -5,29 +5,43 @@ import numpy as np
 from math import ceil
 warnings.filterwarnings('ignore')
 
-#Call the API
-def reponse(entite):
-    url = f"https://swapi.dev/api/{entite}"
-    response = requests.get(url)
-    return response
-reponse("planets")
+#Generation du lien
+def lien(entite) :
+    debut ="https://swapi.dev/api/"
+    link=debut+entite+'/'
+    return link
 
-def page_number(number) :
-    page=ceil(number/10)
-    return page
+#Generation du dictionnaire
+def dico(link) :
+    response = requests.get(link)
+    data_dict = response.json()
+    return data_dict
 
-
-#get the number of entities
+#extraction du nombre d'entite
 def entity_number(data_dict) :
     a=data_dict['count']
     return a
 
-def bb(link,page):
+#calcul du nombre de pages
+def page_number(number) :
+    page=ceil(number/10)
+    return page
+
+#creation de dataframe
+def dataframe(link,page):
     fd=pd.DataFrame()
     for x in range(1,page+1) :
-        request=requests.get(link+str(x))
+        request=requests.get(link+'/?page='+str(x))
         data_dict = request.json()
         species_df = data_dict['results']
         species_df = pd.DataFrame(species_df)
         fd=fd.append(species_df)
-    return fd
+    return fd.reset_index(drop=True)
+
+#creation du dataframe correspondant a partir du nom de l'entite (vehicles,people...)
+def dfswapi(entite):
+    link=lien(entite)
+    df=dataframe(link,page_number(entity_number(dico((link)))))
+    return df
+
+dfswapi(input('quel entite voulez-vous ?'))

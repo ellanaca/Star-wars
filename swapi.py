@@ -72,8 +72,6 @@ def name_url_people(entite):
 
 #creation du dataframe correspondant a partir du nom de l'entite (vehicles,people...)
 def dfswapi(entite):
-    link=lien(entite)
+    link=lien(str(entite))
     df=dataframe(link,page_number(entity_number(dico((link)))))
     return df
-
-dfswapi(input('quel entite voulez-vous ?'))

@@ -36,6 +36,38 @@ def dataframe(link,page):
         species_df = data_dict['results']
         species_df = pd.DataFrame(species_df)
         fd=fd.append(species_df)
+    return fd
+
+
+def name_url_people():   
+    
+    #Appel API
+    request=requests.get(url)
+
+    #Create Dataframe of result
+    json_list = request.json()["results"]
+    json_list_df = pd.DataFrame(json_list)
+
+    #Iterate for each line
+    for line in range(10) :
+        json_list_series_resident = json_list_df["residents"][line]
+
+        #create empty list
+        people_list = []
+
+
+        #iterate for each URL in cell
+        for data in json_list_series_resident:
+
+            response = requests.get(data)
+            get =people_list.append(response.json()["name"])
+
+
+            json_list_df["residents"][line] = people_list
+            
+    return json_list_df
+     
+
     return fd.reset_index(drop=True)
 
 #creation du dataframe correspondant a partir du nom de l'entite (vehicles,people...)
